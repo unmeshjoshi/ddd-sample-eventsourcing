@@ -21,6 +21,7 @@ public class CartRepository {
             cart.getCartId().toString(),
             List.of(event)
         );
+        cart.applyEvent(event);
     }
 
     public Cart findById(CartId cartId) {

@@ -3,6 +3,8 @@ package com.ddd_bootcamp.eventstore;
 import com.ddd_bootcamp.domain.events.DomainEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,6 +14,7 @@ import java.util.List;
 public class HSQLDBEventStore implements EventStore {
     private final DataSource dataSource;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(HSQLDBEventStore.class);
 
     public HSQLDBEventStore(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -110,6 +113,43 @@ public class HSQLDBEventStore implements EventStore {
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? rs.getLong(1) : 0;
             }
+        }
+    }
+
+    @Override
+    public List<StoredEvent> getEventsAfter(long eventId) {
+        String sql = "SELECT event_id, aggregate_id, sequence_number, event_type, event_data " +
+                "FROM event_store " +
+                "WHERE event_id >= ? " +
+                "ORDER BY event_id ASC";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, eventId);
+            ResultSet rs = stmt.executeQuery();
+
+            List<StoredEvent> events = new ArrayList<>();
+            while (rs.next()) {
+                StoredEvent event = new StoredEvent(
+                        rs.getLong("event_id"),
+                        rs.getString("aggregate_id"),
+                        rs.getString("event_type"),
+                        rs.getString("event_data"),
+                        rs.getLong("sequence_number")
+                );
+                events.add(event);
+            }
+
+            if (!events.isEmpty()) {
+                logger.debug("Retrieved {} events after event_id {}", events.size(), eventId);
+            }
+
+            return events;
+
+        } catch (SQLException e) {
+            logger.error("Error retrieving events after event_id {}", eventId, e);
+            throw new RuntimeException("Failed to retrieve events from event store", e);
         }
     }
 } 
