@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id "application"
+}
+
+application {
+    mainClass = "com.ddd_bootcamp.application.CartApplication"
+}
+
+group 'com.ddd_bootcamp.cart'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':order')
+    implementation project(':common')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+     // HSQLDB for event store
+    implementation 'org.hsqldb:hsqldb:2.7.2'
+
+    // JSON serialization (for event store)
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+    // Testing dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21

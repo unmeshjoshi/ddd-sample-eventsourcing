@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.ddd_bootcamp.service.CartServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-11-20T03:44:23" hostname="Unmeshs-MacBook-Pro.local" time="0.275">
+  <properties/>
+  <testcase name="shouldAddItemToCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.237"/>
+  <testcase name="shouldCheckOutCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.014"/>
+  <testcase name="shouldReconstructCartStateFromEvents()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.012"/>
+  <testcase name="shouldRemoveItemFromCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
