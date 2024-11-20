@@ -1,45 +1,84 @@
-# Binaries for programs and plugins
-etcdtest*
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
-# Go workspace file
-go.work
-
-# IDE-specific files
-.idea/
-.vscode/
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# Temporary files
-*.tmp
-*.bak
-*.swp
+# Compiled class files
+*.class
 
 # Log files
 *.log
+logs/
 
-# etcd data directory (if you're using embedded etcd)
-etcd-data/
-**/default.etcd/
-**/*.etcd
-# Any other project-specific directories or files you want to ignore
-# Add them here
+# BlueJ files
+*.ctxt
 
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
 out/
+
+# Eclipse
+.settings/
+.classpath
+.project
+.factorypath
+bin/
+
+# VS Code
+.vscode/
+
+# Spring Boot
+spring-boot-starter/target/
+application*.yml
+application*.properties
+!application.properties
+!application.yml
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test databases
+*.db
+*.sqlite
+*.h2.db
+
+# Application specific
+data/
+temp/
