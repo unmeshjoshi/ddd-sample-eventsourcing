@@ -9,12 +9,13 @@ import java.util.Currency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CartReadRepository {
-    private static final Logger logger = LoggerFactory.getLogger(CartReadRepository.class);
+public class HSQLDBCartReadRepository {
+    private static final Logger logger = LoggerFactory.getLogger(HSQLDBCartReadRepository.class);
     private final DataSource dataSource;
 
-    public CartReadRepository(DataSource dataSource) {
+    public HSQLDBCartReadRepository(DataSource dataSource) throws Exception {
         this.dataSource = dataSource;
+        createReadSchema(dataSource);
     }
 
     public void createCart(String cartId) {
@@ -92,4 +93,35 @@ public class CartReadRepository {
             throw new RuntimeException("Error marking cart as checked out in read model", e);
         }
     }
-} 
+
+    private void createReadSchema(DataSource dataSource) throws Exception {
+        try (var conn = dataSource.getConnection()) {
+            conn.createStatement().execute("""
+                CREATE TABLE cart_read (
+                    cart_id VARCHAR(36) PRIMARY KEY,
+                    status VARCHAR(20) NOT NULL,
+                    created_at TIMESTAMP NOT NULL,
+                    updated_at TIMESTAMP NOT NULL
+                )
+            """);
+
+            conn.createStatement().execute("""
+                CREATE TABLE cart_item_read (
+                    id BIGINT IDENTITY PRIMARY KEY,
+                    cart_id VARCHAR(36) NOT NULL,
+                    product_name VARCHAR(255) NOT NULL,
+                    quantity INT NOT NULL,
+                    price_value DECIMAL(10,2) NOT NULL,
+                    price_currency VARCHAR(3) NOT NULL,
+                    is_removed BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP NOT NULL,
+                    updated_at TIMESTAMP NOT NULL,
+                    FOREIGN KEY (cart_id) REFERENCES cart_read(cart_id)
+                )
+            """);
+        }
+    }
+
+    public void close() {
+    }
+}

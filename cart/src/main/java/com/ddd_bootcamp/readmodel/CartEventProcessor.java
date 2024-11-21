@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 
 public class CartEventProcessor {
     private static final Logger logger = LoggerFactory.getLogger(CartEventProcessor.class);
-    private final CartReadRepository repository;
+    private final HSQLDBCartReadRepository repository;
 
-    public CartEventProcessor(CartReadRepository repository) {
+    public CartEventProcessor(HSQLDBCartReadRepository repository) {
         this.repository = repository;
     }
 

@@ -6,7 +6,7 @@ import com.ddd_bootcamp.eventstore.EventStore;
 import com.ddd_bootcamp.eventstore.EventStorePoller;
 import com.ddd_bootcamp.eventstore.HSQLDBEventStore;
 import com.ddd_bootcamp.readmodel.CartEventProcessor;
-import com.ddd_bootcamp.readmodel.CartReadRepository;
+import com.ddd_bootcamp.readmodel.HSQLDBCartReadRepository;
 import com.ddd_bootcamp.repository.CartRepository;
 import com.ddd_bootcamp.service.CartService;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -41,7 +41,7 @@ class CartEventSourcedCQRSEndToEndTest {
     );
 
     private CartService cartService;
-    private CartReadRepository readRepository;
+    private HSQLDBCartReadRepository readRepository;
     private EventStorePoller poller;
     private CartEventProcessor eventProcessor;
     private DataSource writeDataSource;
@@ -60,8 +60,7 @@ class CartEventSourcedCQRSEndToEndTest {
 
         // Set up read-side database
         readDataSource = createDataSource("readdb");
-        createReadSchema(readDataSource);
-        readRepository = new CartReadRepository(readDataSource);
+        readRepository = new HSQLDBCartReadRepository(readDataSource);
         
         // Set up Kafka producer/consumer and event processing
         KafkaProducer<String, DomainEvent> producer = createKafkaProducer();
@@ -81,34 +80,6 @@ class CartEventSourcedCQRSEndToEndTest {
         ds.setUser("sa");
         ds.setPassword("");
         return ds;
-    }
-
-    private void createReadSchema(DataSource dataSource) throws Exception {
-        try (var conn = dataSource.getConnection()) {
-            conn.createStatement().execute("""
-                CREATE TABLE cart_read (
-                    cart_id VARCHAR(36) PRIMARY KEY,
-                    status VARCHAR(20) NOT NULL,
-                    created_at TIMESTAMP NOT NULL,
-                    updated_at TIMESTAMP NOT NULL
-                )
-            """);
-            
-            conn.createStatement().execute("""
-                CREATE TABLE cart_item_read (
-                    id BIGINT IDENTITY PRIMARY KEY,
-                    cart_id VARCHAR(36) NOT NULL,
-                    product_name VARCHAR(255) NOT NULL,
-                    quantity INT NOT NULL,
-                    price_value DECIMAL(10,2) NOT NULL,
-                    price_currency VARCHAR(3) NOT NULL,
-                    is_removed BOOLEAN DEFAULT FALSE,
-                    created_at TIMESTAMP NOT NULL,
-                    updated_at TIMESTAMP NOT NULL,
-                    FOREIGN KEY (cart_id) REFERENCES cart_read(cart_id)
-                )
-            """);
-        }
     }
 
     private KafkaProducer<String, DomainEvent> createKafkaProducer() {

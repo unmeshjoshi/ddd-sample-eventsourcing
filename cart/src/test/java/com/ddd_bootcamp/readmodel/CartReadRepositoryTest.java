@@ -1,6 +1,8 @@
 package com.ddd_bootcamp.readmodel;
 
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,65 +18,21 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CartReadRepositoryTest {
-    private CartReadRepository repository;
-    private DataSource dataSource;
+    private static HSQLDBCartReadRepository repository;
+    private static DataSource dataSource;
 
-    @BeforeEach
-    void setUp() throws Exception {
+    @BeforeAll
+    static void setUp() throws Exception {
         dataSource = createDataSource();
-        createSchema();
-        repository = new CartReadRepository(dataSource);
+        repository = new HSQLDBCartReadRepository(dataSource);
     }
 
-    private DataSource createDataSource() {
+    private static DataSource createDataSource() {
         JDBCDataSource ds = new JDBCDataSource();
         ds.setUrl("jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1");
         ds.setUser("sa");
         ds.setPassword("");
         return ds;
-    }
-
-    private void createSchema() throws Exception {
-        try (Connection conn = dataSource.getConnection()) {
-            createCartTable(conn);
-            createCartItemTable(conn);
-            createCartItemIndex(conn);
-        }
-    }
-
-    private void createCartTable(Connection conn) throws Exception {
-        conn.createStatement().execute("""
-            CREATE TABLE IF NOT EXISTS cart_read (
-                cart_id VARCHAR(36) PRIMARY KEY,
-                status VARCHAR(20) NOT NULL,
-                created_at TIMESTAMP NOT NULL,
-                updated_at TIMESTAMP NOT NULL
-            )
-        """);
-    }
-
-    private void createCartItemTable(Connection conn) throws Exception {
-        conn.createStatement().execute("""
-            CREATE TABLE IF NOT EXISTS cart_item_read (
-                id BIGINT IDENTITY PRIMARY KEY,
-                cart_id VARCHAR(36) NOT NULL,
-                product_name VARCHAR(255) NOT NULL,
-                quantity INT NOT NULL,
-                price_value DECIMAL(10,2) NOT NULL,
-                price_currency VARCHAR(3) NOT NULL,
-                is_removed BOOLEAN DEFAULT FALSE,
-                created_at TIMESTAMP NOT NULL,
-                updated_at TIMESTAMP NOT NULL,
-                FOREIGN KEY (cart_id) REFERENCES cart_read(cart_id)
-            )
-        """);
-    }
-
-    private void createCartItemIndex(Connection conn) throws Exception {
-        conn.createStatement().execute("""
-            CREATE INDEX IF NOT EXISTS idx_cart_items_cart_id 
-            ON cart_item_read(cart_id)
-        """);
     }
 
     @Test
