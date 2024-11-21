@@ -32,7 +32,7 @@ import java.util.Properties;
 import static com.ddd_bootcamp.eventstore.EventStorePollerTest.waitUntilTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CartEndToEndTest {
+class CartEventSourcedCQRSEndToEndTest {
     private static final String TOPIC = "cart-events";
     private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
