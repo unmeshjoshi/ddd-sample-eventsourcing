@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ddd_bootcamp.service.CartServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-11-20T05:44:53" hostname="Unmeshs-MacBook-Pro.local" time="0.075">
+<testsuite name="com.ddd_bootcamp.service.CartServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-11-21T01:30:59" hostname="Unmeshs-MacBook-Pro.local" time="0.062">
   <properties/>
-  <testcase name="shouldAddItemToCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.045"/>
+  <testcase name="shouldAddItemToCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.037"/>
   <testcase name="shouldCheckOutCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.012"/>
-  <testcase name="shouldReconstructCartStateFromEvents()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.008"/>
-  <testcase name="shouldRemoveItemFromCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.007"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="shouldReconstructCartStateFromEvents()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.007"/>
+  <testcase name="shouldRemoveItemFromCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.005"/>
+  <system-out><![CDATA[07:00:59.984 [kafka-coordinator-heartbeat-thread | test-group] DEBUG org.apache.kafka.clients.NetworkClient -- [Consumer clientId=consumer-test-group-1, groupId=test-group] Give up sending metadata request since no node is available
+07:00:59.984 [kafka-coordinator-heartbeat-thread | test-group] DEBUG org.apache.kafka.clients.consumer.internals.ConsumerCoordinator -- [Consumer clientId=consumer-test-group-1, groupId=test-group] No broker available to send FindCoordinator request
+07:00:59.984 [Thread-8] DEBUG org.apache.kafka.clients.NetworkClient -- [Consumer clientId=consumer-test-group-1, groupId=test-group] Give up sending metadata request since no node is available
+07:00:59.984 [Thread-8] DEBUG org.apache.kafka.clients.consumer.internals.ConsumerCoordinator -- [Consumer clientId=consumer-test-group-1, groupId=test-group] No broker available to send FindCoordinator request
+07:00:59.984 [Thread-8] DEBUG org.apache.kafka.clients.NetworkClient -- [Consumer clientId=consumer-test-group-1, groupId=test-group] Give up sending metadata request since no node is available
+07:00:59.984 [Thread-8] DEBUG org.apache.kafka.clients.consumer.internals.ConsumerCoordinator -- [Consumer clientId=consumer-test-group-1, groupId=test-group] Coordinator discovery failed, refreshing metadata
+org.apache.kafka.clients.consumer.internals.NoAvailableBrokersException: null
+07:00:59.984 [Thread-8] DEBUG org.apache.kafka.clients.NetworkClient -- [Consumer clientId=consumer-test-group-1, groupId=test-group] Give up sending metadata request since no node is available
+07:00:59.987 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.clients.NetworkClient -- [Producer clientId=producer-1] Initialize connection to node localhost:32808 (id: 1 rack: null) for sending metadata request
+07:00:59.987 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.clients.ClientUtils -- Resolved host localhost as 127.0.0.1
+07:00:59.987 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.clients.NetworkClient -- [Producer clientId=producer-1] Initiating connection to node localhost:32808 (id: 1 rack: null) using address localhost/127.0.0.1
+07:00:59.988 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.common.network.Selector -- [Producer clientId=producer-1] Connection with localhost/127.0.0.1 (channelId=1) disconnected
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:973)
+	at org.apache.kafka.common.network.PlaintextTransportLayer.finishConnect(PlaintextTransportLayer.java:50)
+	at org.apache.kafka.common.network.KafkaChannel.finishConnect(KafkaChannel.java:224)
+	at org.apache.kafka.common.network.Selector.pollSelectionKeys(Selector.java:526)
+	at org.apache.kafka.common.network.Selector.poll(Selector.java:481)
+	at org.apache.kafka.clients.NetworkClient.poll(NetworkClient.java:571)
+	at org.apache.kafka.clients.producer.internals.Sender.runOnce(Sender.java:343)
+	at org.apache.kafka.clients.producer.internals.Sender.run(Sender.java:246)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+07:00:59.988 [kafka-producer-network-thread | producer-1] INFO org.apache.kafka.clients.NetworkClient -- [Producer clientId=producer-1] Node 1 disconnected.
+07:00:59.988 [kafka-producer-network-thread | producer-1] WARN org.apache.kafka.clients.NetworkClient -- [Producer clientId=producer-1] Connection to node 1 (localhost/127.0.0.1:32808) could not be established. Broker may not be available.
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

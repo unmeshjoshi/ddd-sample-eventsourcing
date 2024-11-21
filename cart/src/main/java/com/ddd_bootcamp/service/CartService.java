@@ -24,7 +24,8 @@ public class CartService {
         ItemAddedToCartEvent event = new ItemAddedToCartEvent(
             item.getProductName(),
             item.getQuantity(),
-            item.getProductPrice()
+            item.getProductPrice(),
+            cartId.getId()
         );
         cartRepository.save(cart, event);
     }
@@ -32,7 +33,7 @@ public class CartService {
     public void removeItem(CartId cartId, Item item) {
         Cart cart = cartRepository.findById(cartId);
         ItemRemovedFromCartEvent event = new ItemRemovedFromCartEvent(
-            item.getProductName()
+            item.getProductName(), cartId.getId()
         );
         cartRepository.save(cart, event);
     }

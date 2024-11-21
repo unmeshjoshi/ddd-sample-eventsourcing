@@ -71,7 +71,7 @@ public class HSQLDBEventStore implements EventStore {
     public List<DomainEvent> getEvents(String aggregateId) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
-                "SELECT event_type, event_data FROM event_store WHERE aggregate_id = ? ORDER BY sequence_number")) {
+                "SELECT event_type, event_data FROM event_store WHERE aggregate_id = ? ORDER BY event_id")) {
             
             ps.setString(1, aggregateId);
             List<DomainEvent> events = new ArrayList<>();

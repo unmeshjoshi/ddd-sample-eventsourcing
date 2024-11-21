@@ -8,16 +8,19 @@ public class ItemAddedToCartEvent implements DomainEvent {
     private final String productName;
     private final int quantity;
     private final Price price;
+    private final String cartId;
 
     @JsonCreator
     public ItemAddedToCartEvent(
-        @JsonProperty("productName") String productName,
-        @JsonProperty("quantity") int quantity,
-        @JsonProperty("price") Price price
+            @JsonProperty("productName") String productName,
+            @JsonProperty("quantity") int quantity,
+            @JsonProperty("price") Price price,
+            @JsonProperty("cartId") String cartId
     ) {
         this.productName = productName;
         this.quantity = quantity;
         this.price = price;
+        this.cartId = cartId;
     }
 
     @JsonProperty("productName")
@@ -33,5 +36,10 @@ public class ItemAddedToCartEvent implements DomainEvent {
     @JsonProperty("price")
     public Price getPrice() {
         return price;
+    }
+
+    @JsonProperty("cartId")
+    public String getCartId() {
+        return cartId;
     }
 }

@@ -84,7 +84,7 @@ public class Cart implements Aggregate {
 
     public void remove(Item item) {
         ItemRemovedFromCartEvent itemRemovedFromCartEvent =
-                new ItemRemovedFromCartEvent(item.getProductName());
+                new ItemRemovedFromCartEvent(item.getProductName(), cartId.getId());
 
         apply(itemRemovedFromCartEvent);
     }
@@ -94,7 +94,6 @@ public class Cart implements Aggregate {
                 new CartItem(item.getProductName(),
                         item.getProductPrice(),
                         item.getQuantity())).collect(Collectors.toList());
-
         //publish on messaging system pub/sub
         apply(new CartCheckedOutEvent(cartId, cartItems));
     }
@@ -121,7 +120,7 @@ public class Cart implements Aggregate {
     public void add(Item item) {
         ItemAddedToCartEvent itemAddedEvent =
                 new ItemAddedToCartEvent(item.getProductName(),
-                        item.getQuantity(), item.getProductPrice());
+                        item.getQuantity(), item.getProductPrice(), cartId.getId());
 
         apply(itemAddedEvent);
     }

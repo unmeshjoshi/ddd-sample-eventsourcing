@@ -136,7 +136,7 @@ public class EventStorePollerTest {
     }
 
 
-    private static void waitUntilTrue(Supplier<Boolean> condition, String msg, Duration waitTime) {
+    public static void waitUntilTrue(Supplier<Boolean> condition, String msg, Duration waitTime) {
         try {
             var startTime = System.nanoTime();
             while (true) {
