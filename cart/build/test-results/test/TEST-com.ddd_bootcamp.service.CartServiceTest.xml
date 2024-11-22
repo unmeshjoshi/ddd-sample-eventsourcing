@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ddd_bootcamp.service.CartServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-11-21T03:33:03" hostname="Unmeshs-MacBook-Pro.local" time="0.054">
+<testsuite name="com.ddd_bootcamp.service.CartServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-11-22T03:56:23" hostname="Unmeshs-MacBook-Pro.local" time="0.064">
   <properties/>
-  <testcase name="shouldAddItemToCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.023"/>
-  <testcase name="shouldCheckOutCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.012"/>
-  <testcase name="shouldReconstructCartStateFromEvents()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.01"/>
-  <testcase name="shouldRemoveItemFromCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.008"/>
-  <system-out><![CDATA[09:03:03.146 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.clients.NetworkClient -- [Producer clientId=producer-1] Give up sending metadata request since no node is available
-09:03:03.182 [Thread-8] DEBUG org.apache.kafka.clients.NetworkClient -- [Consumer clientId=consumer-test-group-1, groupId=test-group] Give up sending metadata request since no node is available
+  <testcase name="shouldAddItemToCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.034"/>
+  <testcase name="shouldCheckOutCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.013"/>
+  <testcase name="shouldReconstructCartStateFromEvents()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.009"/>
+  <testcase name="shouldRemoveItemFromCart()" classname="com.ddd_bootcamp.service.CartServiceTest" time="0.006"/>
+  <system-out><![CDATA[09:26:23.386 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.clients.NetworkClient -- [Producer clientId=producer-1] Give up sending metadata request since no node is available
+09:26:23.410 [Thread-8] DEBUG org.apache.kafka.clients.NetworkClient -- [Consumer clientId=consumer-test-group-1, groupId=test-group] Give up sending metadata request since no node is available
+09:26:23.438 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.clients.NetworkClient -- [Producer clientId=producer-1] Give up sending metadata request since no node is available
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

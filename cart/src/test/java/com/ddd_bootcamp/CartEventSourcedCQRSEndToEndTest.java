@@ -63,14 +63,15 @@ class CartEventSourcedCQRSEndToEndTest {
         readRepository = new HSQLDBCartReadRepository(readDataSource);
         
         // Set up Kafka producer/consumer and event processing
+        // Start the event poller. This will push events from eventStore
+        // to kakfa.
         KafkaProducer<String, DomainEvent> producer = createKafkaProducer();
-        eventProcessor = new CartEventProcessor(readRepository);
-        
-        // Start the event poller
         poller = new EventStorePoller(eventStore, producer, 100);
         poller.start();
-        
-        // Start consuming events
+
+        //Following is the consumer for the read-side
+        // Start consuming events to populate read side database.
+        eventProcessor = new CartEventProcessor(readRepository);
         startEventConsumer();
     }
 

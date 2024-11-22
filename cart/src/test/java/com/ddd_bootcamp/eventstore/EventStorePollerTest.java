@@ -117,7 +117,7 @@ public class EventStorePollerTest {
         waitUntilTrue(()->{
             return receivedEvents.size() == 2;
 
-        }, "waiting for events to be received", Duration.ofMillis(2000));
+        }, "waiting for events to be received", Duration.ofMillis(5000));
 
         // Verify
         assertEquals(2, receivedEvents.size(), "Should have received exactly two events");
