@@ -1,15 +1,17 @@
 package com.ddd_bootcamp.readmodel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class HSQLDBCartReadRepository {
+public class HSQLDBCartReadRepository implements CartReadRepository, CartReadModelUpdater {
     private static final Logger logger = LoggerFactory.getLogger(HSQLDBCartReadRepository.class);
     private final DataSource dataSource;
 
@@ -18,6 +20,45 @@ public class HSQLDBCartReadRepository {
         createReadSchema(dataSource);
     }
 
+    // CartReadRepository implementation (read-only methods)
+    @Override
+    public List<CartItemReadModel> getRemovedItems(String cartId) {
+        String sql = """
+            SELECT product_name, quantity, price_value, price_currency, created_at, updated_at 
+            FROM cart_item_read 
+            WHERE cart_id = ? 
+            AND is_removed = TRUE 
+            ORDER BY updated_at DESC
+        """;
+        
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, cartId);
+            ResultSet rs = stmt.executeQuery();
+            
+            List<CartItemReadModel> removedItems = new ArrayList<>();
+            while (rs.next()) {
+                removedItems.add(new CartItemReadModel(
+                    rs.getString("product_name"),
+                    rs.getInt("quantity"),
+                    rs.getBigDecimal("price_value"),
+                    Currency.getInstance(rs.getString("price_currency")),
+                    rs.getTimestamp("created_at").toInstant(),
+                    rs.getTimestamp("updated_at").toInstant()
+                ));
+            }
+            
+            logger.debug("Retrieved {} removed items for cart {}", removedItems.size(), cartId);
+            return removedItems;
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving removed items from cart", e);
+        }
+    }
+
+    // CartReadModelUpdater implementation (write methods)
+    @Override
     public void createCart(String cartId) {
         String sql = "INSERT INTO cart_read (cart_id, status, created_at, updated_at) VALUES (?, 'ACTIVE', ?, ?)";
         
@@ -36,6 +77,7 @@ public class HSQLDBCartReadRepository {
         }
     }
 
+    @Override
     public void addCartItem(String cartId, String productName, int quantity, BigDecimal price, Currency currency) {
         String sql = "INSERT INTO cart_item_read " +
                     "(cart_id, product_name, quantity, price_value, price_currency, created_at, updated_at) " +
@@ -60,6 +102,7 @@ public class HSQLDBCartReadRepository {
         }
     }
 
+    @Override
     public void markItemAsRemoved(String cartId, String productName) {
         String sql = "UPDATE cart_item_read SET is_removed = TRUE, updated_at = ? " +
                     "WHERE cart_id = ? AND product_name = ? AND is_removed = FALSE";
@@ -78,6 +121,7 @@ public class HSQLDBCartReadRepository {
         }
     }
 
+    @Override
     public void markCartAsCheckedOut(String cartId) {
         String sql = "UPDATE cart_read SET status = 'CHECKED_OUT', updated_at = ? WHERE cart_id = ?";
         
@@ -94,6 +138,7 @@ public class HSQLDBCartReadRepository {
         }
     }
 
+    // Private helper methods
     private void createReadSchema(DataSource dataSource) throws Exception {
         try (var conn = dataSource.getConnection()) {
             conn.createStatement().execute("""

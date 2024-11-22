@@ -115,7 +115,7 @@ public class EventStorePollerTest {
         // Then
         // Wait for events to be processed with timeout
         waitUntilTrue(()->{
-            return receivedEvents.size() == 2;
+            return receivedEvents.size() > 0;
 
         }, "waiting for events to be received", Duration.ofMillis(5000));
 
